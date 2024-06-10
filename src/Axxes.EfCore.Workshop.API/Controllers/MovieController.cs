@@ -1,4 +1,4 @@
-﻿using Axxes.EfCore.Workshop.Data.Models;
+﻿using Axxes.EfCore.Workshop.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Axxes.EfCore.Workshop.API.Controllers;

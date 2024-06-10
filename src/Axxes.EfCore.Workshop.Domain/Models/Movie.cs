@@ -1,4 +1,4 @@
-﻿namespace Axxes.EfCore.Workshop.Data.Models;
+﻿namespace Axxes.EfCore.Workshop.Domain.Models;
 
 public class Movie
 {

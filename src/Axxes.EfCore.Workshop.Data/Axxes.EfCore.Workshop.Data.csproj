@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Axxes.EfCore.Workshop.Domain\Axxes.EfCore.Workshop.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
