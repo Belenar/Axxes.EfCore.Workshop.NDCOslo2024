@@ -4,17 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Axxes.EfCore.Workshop.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("/[controller]")]
 [ApiController]
 public class MovieController(IMovieRepository movieRepo) : ControllerBase
 {
-    private readonly IMovieRepository _movieRepo = movieRepo;
-
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Movie>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var movies = await _movieRepo.GetAll();
+        var movies = await movieRepo.GetAll();
 
         return Ok(movies);
     }
@@ -24,8 +22,12 @@ public class MovieController(IMovieRepository movieRepo) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        //TODO: fetch data
-        return NotFound();
+        var movie = await movieRepo.GetById(id);
+
+        if (movie is null)
+            return NotFound();
+
+        return Ok(movie);
     }
 
     // POST api/<MovieController>
@@ -33,8 +35,11 @@ public class MovieController(IMovieRepository movieRepo) : ControllerBase
     [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] Movie value)
     {
-        //TODO: insert data
-        return CreatedAtAction(nameof(Get), value.Id);
+        value.ItemKey = 0;
+
+        await movieRepo.Create(value);
+
+        return CreatedAtAction(nameof(Get), new { id = value.ItemKey }, value);
     }
 
     [HttpPut("{id:int}")]

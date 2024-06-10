@@ -1,6 +1,17 @@
 @Axxes.EfCore.Workshop.API_HostAddress = http://localhost:5254
 
-GET {{Axxes.EfCore.Workshop.API_HostAddress}}/weatherforecast/
+POST {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/
+Content-Type: application/json
+
+{
+  "id": "8",
+  "title": "Fight Club",
+  "releaseDate": "1999-02-11",
+  "description": "Ed Norton and Brad Pitt fight for a bit."
+}
+###
+
+GET {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/8
 Accept: application/json
 
 ###

@@ -15,7 +15,13 @@ public static class DependencyResolution
         services.AddDbContext<MoviesContext>(builder =>
         {
             builder.UseSqlServer(
-                "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=NDC_Oslo; Integrated Security = True ");
+                """
+                Data Source = (localdb)\MSSQLLocalDB;
+                Initial Catalog = NDC_Oslo;
+                Integrated Security = True;
+                """);
+
+            builder.LogTo(Console.WriteLine);
         });
     }
 }

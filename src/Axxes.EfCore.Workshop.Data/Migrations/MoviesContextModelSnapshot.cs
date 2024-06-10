@@ -24,25 +24,27 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Movie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ItemKey")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemKey"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("ReleaseDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)")
+                        .HasColumnName("MovieTitle");
 
-                    b.HasKey("Id");
+                    b.HasKey("ItemKey");
 
-                    b.ToTable("Movies");
+                    b.ToTable("MotionPictures", (string)null);
                 });
 #pragma warning restore 612, 618
         }
