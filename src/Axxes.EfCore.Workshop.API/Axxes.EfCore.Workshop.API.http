@@ -1,0 +1,6 @@
+@Axxes.EfCore.Workshop.API_HostAddress = http://localhost:5254
+
+GET {{Axxes.EfCore.Workshop.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
