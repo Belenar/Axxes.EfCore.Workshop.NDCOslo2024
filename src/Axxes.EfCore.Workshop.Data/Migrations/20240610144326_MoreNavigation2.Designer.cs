@@ -4,6 +4,7 @@ using Axxes.EfCore.Workshop.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Axxes.EfCore.Workshop.Data.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    partial class MoviesContextModelSnapshot : ModelSnapshot
+    [Migration("20240610144326_MoreNavigation2")]
+    partial class MoreNavigation2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,14 +53,11 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MainGenreId")
+                    b.Property<int?>("GenreId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime");
-
-                    b.Property<int?>("SecondaryGenreId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -67,9 +67,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
                     b.HasKey("ItemKey");
 
-                    b.HasIndex("MainGenreId");
-
-                    b.HasIndex("SecondaryGenreId");
+                    b.HasIndex("GenreId");
 
                     b.ToTable("MotionPictures", (string)null);
                 });
@@ -78,15 +76,9 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 {
                     b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Genre", "Genre")
                         .WithMany("Movies")
-                        .HasForeignKey("MainGenreId");
-
-                    b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Genre", "SecondaryGenre")
-                        .WithMany()
-                        .HasForeignKey("SecondaryGenreId");
+                        .HasForeignKey("GenreId");
 
                     b.Navigation("Genre");
-
-                    b.Navigation("SecondaryGenre");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Genre", b =>

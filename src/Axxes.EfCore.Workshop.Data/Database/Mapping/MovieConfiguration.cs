@@ -21,5 +21,31 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(movie => movie.ReleaseDate)
             .HasColumnType("datetime")
             .HasConversion(new DateOnlyToDateTimeConverter());
+
+        builder
+            .HasOne(movie => movie.SecondaryGenre)
+            .WithMany()
+            .HasPrincipalKey(genre => genre.Id)
+            .HasForeignKey(movie => movie.SecondaryGenreId);
+
+    }
+}
+
+public class GenreConfiguration : IEntityTypeConfiguration<Genre>
+{
+    public void Configure(EntityTypeBuilder<Genre> builder)
+    {
+        builder
+            .HasMany(genre => genre.Movies)
+            .WithOne(movie => movie.Genre)
+            .HasPrincipalKey(genre => genre.Id)
+            .HasForeignKey(movie => movie.MainGenreId);
+
+        // Also works instead of the one in Movie
+        //builder
+        //    .HasMany<Movie>()
+        //    .WithOne(movie => movie.Genre)
+        //    .HasPrincipalKey(genre => genre.Id)
+        //    .HasForeignKey(movie => movie.SecondaryGenreId);
     }
 }

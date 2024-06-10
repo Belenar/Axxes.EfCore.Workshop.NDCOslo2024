@@ -10,8 +10,22 @@ public class Movie
     public DateOnly ReleaseDate { get; set; }
     public string? Description { get; set; }
 
+    public int? MainGenreId { get; set; }
+    public Genre? Genre { get; set; }
+
+    public int? SecondaryGenreId { get; set; }
+    public Genre? SecondaryGenre { get; set; }
+
     public override string ToString()
     {
         return $"{Title} ({ReleaseDate.Year})";
     }
+}
+
+public class Genre
+{
+    public int Id { get; set; }
+    public required string Name { get; set; }
+
+    public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
 }
