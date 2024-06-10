@@ -1,18 +1,22 @@
-﻿using Axxes.EfCore.Workshop.Domain.Models;
+﻿using Axxes.EfCore.Workshop.Domain.Infrastructure.Database;
+using Axxes.EfCore.Workshop.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Axxes.EfCore.Workshop.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MovieController : ControllerBase
+public class MovieController(IMovieRepository movieRepo) : ControllerBase
 {
+    private readonly IMovieRepository _movieRepo = movieRepo;
+
     [HttpGet]
-    [ProducesResponseType(typeof(List<Movie>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Movie>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        //TODO: fetch data
-        return Ok(new Movie[] { });
+        var movies = await _movieRepo.GetAll();
+
+        return Ok(movies);
     }
 
     [HttpGet("{id}")]

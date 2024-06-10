@@ -21,6 +21,8 @@ namespace Axxes.EfCore.Workshop.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            serviceConfig(builder.Services);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

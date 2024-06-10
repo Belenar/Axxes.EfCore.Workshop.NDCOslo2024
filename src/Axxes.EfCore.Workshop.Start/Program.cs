@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace Axxes.EfCore.Workshop.Start
 {
     public class Program
@@ -8,6 +6,7 @@ namespace Axxes.EfCore.Workshop.Start
         {
             Action<IServiceCollection> serviceConfig = services =>
             {
+                Data.DependencyResolution.Setup(services);
             };
 
             API.Program.StartWebHost(serviceConfig, args);
