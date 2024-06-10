@@ -13,8 +13,7 @@ public class Movie
     public int? MainGenreId { get; set; }
     public Genre? Genre { get; set; }
 
-    public int? SecondaryGenreId { get; set; }
-    public Genre? SecondaryGenre { get; set; }
+    public ICollection<Genre> SecondaryGenres { get; set; } = new HashSet<Genre>();
 
     public override string ToString()
     {
@@ -28,4 +27,5 @@ public class Genre
     public required string Name { get; set; }
 
     public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
+    public ICollection<Movie> SecondaryMovies { get; set; } = new HashSet<Movie>();
 }
