@@ -22,6 +22,8 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.HasSequence("MovieSequence");
+
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -43,9 +45,10 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 {
                     b.Property<int>("ItemKey")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [MovieSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemKey"));
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("ItemKey"));
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
@@ -71,7 +74,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
                     b.ToTable("MotionPictures", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -96,7 +99,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                     b.Property<decimal>("BoxOfficeRevenue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.ToTable("CinemaMovies", (string)null);
+                    b.ToTable("CinemaMovie");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.TelevisionMovie", b =>
@@ -107,7 +110,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("TelevisionMovies", (string)null);
+                    b.ToTable("TelevisionMovie");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Movie", b =>
@@ -130,24 +133,6 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                     b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("SecondaryMoviesItemKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.CinemaMovie", b =>
-                {
-                    b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Movie", null)
-                        .WithOne()
-                        .HasForeignKey("Axxes.EfCore.Workshop.Domain.Models.CinemaMovie", "ItemKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.TelevisionMovie", b =>
-                {
-                    b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Movie", null)
-                        .WithOne()
-                        .HasForeignKey("Axxes.EfCore.Workshop.Domain.Models.TelevisionMovie", "ItemKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

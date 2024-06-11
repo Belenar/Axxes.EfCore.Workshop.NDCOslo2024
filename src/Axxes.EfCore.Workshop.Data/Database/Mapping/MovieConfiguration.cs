@@ -26,6 +26,8 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.HasQueryFilter(movie =>
             EF.Property<DateTime>(movie, "CreatedAtUtc") > new DateTime(2000, 1, 1));
+
+        builder.UseTpcMappingStrategy();
     }
 }
 
@@ -33,7 +35,6 @@ public class CinemaMovieConfiguration : IEntityTypeConfiguration<CinemaMovie>
 {
     public void Configure(EntityTypeBuilder<CinemaMovie> builder)
     {
-        builder.ToTable("CinemaMovies");
     }
 }
 
@@ -41,7 +42,6 @@ public class TelevisionMovieConfiguration : IEntityTypeConfiguration<TelevisionM
 {
     public void Configure(EntityTypeBuilder<TelevisionMovie> builder)
     {
-        builder.ToTable("TelevisionMovies");
     }
 }
 

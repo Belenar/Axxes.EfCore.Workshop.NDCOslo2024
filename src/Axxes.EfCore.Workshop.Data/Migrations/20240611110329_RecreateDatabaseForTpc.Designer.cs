@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Axxes.EfCore.Workshop.Data.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    [Migration("20240610144326_MoreNavigation2")]
-    partial class MoreNavigation2
+    [Migration("20240611110329_RecreateDatabaseForTpc")]
+    partial class RecreateDatabaseForTpc
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,8 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.HasSequence("MovieSequence");
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Genre", b =>
                 {
@@ -46,14 +48,18 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 {
                     b.Property<int>("ItemKey")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [MovieSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemKey"));
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("ItemKey"));
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GenreId")
+                    b.Property<int?>("MainGenreId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseDate")
@@ -67,18 +73,71 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
                     b.HasKey("ItemKey");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("MainGenreId");
 
                     b.ToTable("MotionPictures", (string)null);
+
+                    b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.Property<int>("SecondaryGenresId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecondaryMoviesItemKey")
+                        .HasColumnType("int");
+
+                    b.HasKey("SecondaryGenresId", "SecondaryMoviesItemKey");
+
+                    b.HasIndex("SecondaryMoviesItemKey");
+
+                    b.ToTable("GenreMovie");
+                });
+
+            modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.CinemaMovie", b =>
+                {
+                    b.HasBaseType("Axxes.EfCore.Workshop.Domain.Models.Movie");
+
+                    b.Property<decimal>("BoxOfficeRevenue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("CinemaMovie");
+                });
+
+            modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.TelevisionMovie", b =>
+                {
+                    b.HasBaseType("Axxes.EfCore.Workshop.Domain.Models.Movie");
+
+                    b.Property<string>("NetworkFirstAiredOn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("TelevisionMovie");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Movie", b =>
                 {
                     b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Genre", "Genre")
                         .WithMany("Movies")
-                        .HasForeignKey("GenreId");
+                        .HasForeignKey("MainGenreId");
 
                     b.Navigation("Genre");
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("SecondaryGenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("SecondaryMoviesItemKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Genre", b =>

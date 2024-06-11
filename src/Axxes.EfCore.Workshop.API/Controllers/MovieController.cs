@@ -33,16 +33,8 @@ public class MovieController(IMovieRepository movieRepo) : ControllerBase
     // POST api/<MovieController>
     [HttpPost]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create([FromBody] Movie value)
+    public async Task<IActionResult> Create([FromBody] CinemaMovie movie)
     {
-        var movie = new CinemaMovie
-        {
-            Title = value.Title,
-            Description = value.Description,
-            ReleaseDate = value.ReleaseDate,
-            BoxOfficeRevenue = 1000000
-        };
-
         await movieRepo.Create(movie);
 
         return CreatedAtAction(nameof(Get), new { id = movie.ItemKey }, movie);

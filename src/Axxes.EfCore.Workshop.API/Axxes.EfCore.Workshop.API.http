@@ -7,7 +7,8 @@ Content-Type: application/json
   "id": "8",
   "title": "Fight Club",
   "releaseDate": "1999-02-11",
-  "description": "Ed Norton and Brad Pitt fight for a bit."
+  "description": "Ed Norton and Brad Pitt fight for a bit.",
+  "boxOfficeRevenue" : 1000000.0
 }
 ###
 

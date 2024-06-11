@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Database\Mapping\" />
     <Folder Include="Database\ValueConverters\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
