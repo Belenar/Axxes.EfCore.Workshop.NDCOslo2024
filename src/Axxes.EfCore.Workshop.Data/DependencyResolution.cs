@@ -21,7 +21,9 @@ public static class DependencyResolution
                 Integrated Security = True;
                 """);
 
-            builder.LogTo(Console.WriteLine);
+            builder
+                .LogTo(Console.WriteLine)
+                .EnableSensitiveDataLogging(true);
         });
     }
 }

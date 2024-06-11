@@ -9,7 +9,8 @@ public class MovieRepository(MoviesContext db) : IMovieRepository
 {
     public async Task<IEnumerable<Movie>> GetAll()
     {
-        return await db.Movies.ToListAsync();
+        return await db.Movies
+            .ToListAsync();
     }
 
     public async Task<Movie?> GetById(int id)

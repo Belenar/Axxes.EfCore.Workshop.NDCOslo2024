@@ -21,6 +21,11 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(movie => movie.ReleaseDate)
             .HasColumnType("datetime")
             .HasConversion(new DateOnlyToDateTimeConverter());
+
+        builder.Property<DateTime>("CreatedAtUtc");
+
+        builder.HasQueryFilter(movie =>
+            EF.Property<DateTime>(movie, "CreatedAtUtc") > new DateTime(2000, 1, 1));
     }
 }
 
