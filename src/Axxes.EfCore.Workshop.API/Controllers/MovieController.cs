@@ -46,7 +46,11 @@ public class MovieController(IMovieRepository movieRepo) : ControllerBase
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Movie movie)
     {
         //TODO: update data
-        return NotFound();
+        var changedMovie = await movieRepo.Update(id, movie);
+        if(changedMovie == null)
+            return NotFound();
+
+        return Ok(changedMovie);
     }
 
     [HttpDelete("{id:int}")]

@@ -28,6 +28,9 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             EF.Property<DateTime>(movie, "CreatedAtUtc") > new DateTime(2000, 1, 1));
 
         builder.OwnsMany(movie => movie.Directors);
+
+        builder.Property(movie => movie.RowVersion)
+            .IsRowVersion();
     }
 }
 

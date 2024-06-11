@@ -26,9 +26,18 @@ public class MovieRepository(MoviesContext db) : IMovieRepository
         await db.SaveChangesAsync();
     }
 
-    public Task<Movie?> Update(Movie changedMovie)
+    public async Task<Movie?> Update(int id, Movie changedMovie)
     {
-        throw new NotImplementedException();
+        var existingMovie = await db.Movies.FindAsync(id);
+
+
+        if (existingMovie != null)
+        {
+            existingMovie.Title = changedMovie.Title;
+            await db.SaveChangesAsync();
+        }
+
+        return existingMovie;
     }
 
     public Task<Movie?> Delete(int id)

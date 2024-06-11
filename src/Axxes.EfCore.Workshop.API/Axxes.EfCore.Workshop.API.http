@@ -11,7 +11,8 @@ Content-Type: application/json
   "directors": [{
     "firstName": "David",
     "lastName": "Fincher"
-  }]
+  }],
+  "rowVersion": ""
 }
 ###
 
@@ -19,3 +20,18 @@ GET {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/8
 Accept: application/json
 
 ###
+
+PUT {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/1
+Content-Type: application/json
+
+{
+  "title": "Fight Club 2",
+  "releaseDate": "1999-02-11",
+  "description": "Ed Norton and Brad Pitt fight for a bit.",
+  "boxOfficeRevenue" : 1000000.0,
+  "directors": [{
+    "firstName": "David",
+    "lastName": "Fincher"
+  }],
+  "rowVersion": ""
+}

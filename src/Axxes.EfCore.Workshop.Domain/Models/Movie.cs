@@ -17,6 +17,8 @@ public class Movie
 
     public ICollection<Genre> SecondaryGenres { get; set; } = new HashSet<Genre>();
 
+    public byte[] RowVersion { get; set; }
+
     public override string ToString()
     {
         return $"{Title} ({ReleaseDate.Year})";

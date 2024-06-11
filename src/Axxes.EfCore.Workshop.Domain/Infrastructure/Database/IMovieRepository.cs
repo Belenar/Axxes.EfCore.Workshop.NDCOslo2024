@@ -7,6 +7,6 @@ public interface IMovieRepository
     Task<IEnumerable<Movie>> GetAll();
     Task<Movie?> GetById(int id);
     Task Create(Movie newMovie);
-    Task<Movie?> Update(Movie changedMovie);
+    Task<Movie?> Update(int id, Movie changedMovie);
     Task<Movie?> Delete(int id);
 }
