@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Axxes.EfCore.Workshop.Data.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    [Migration("20240611110329_RecreateDatabaseForTpc")]
-    partial class RecreateDatabaseForTpc
+    [Migration("20240611121115_RecreateDatabase")]
+    partial class RecreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,8 +24,6 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.HasSequence("MovieSequence");
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Genre", b =>
                 {
@@ -48,16 +46,20 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                 {
                     b.Property<int>("ItemKey")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("NEXT VALUE FOR [MovieSequence]");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("ItemKey"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemKey"));
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<int?>("MainGenreId")
                         .HasColumnType("int");
@@ -77,7 +79,9 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
 
                     b.ToTable("MotionPictures", (string)null);
 
-                    b.UseTpcMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Movie");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -102,7 +106,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                     b.Property<decimal>("BoxOfficeRevenue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.ToTable("CinemaMovie");
+                    b.HasDiscriminator().HasValue("CinemaMovie");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.TelevisionMovie", b =>
@@ -113,7 +117,7 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("TelevisionMovie");
+                    b.HasDiscriminator().HasValue("TelevisionMovie");
                 });
 
             modelBuilder.Entity("Axxes.EfCore.Workshop.Domain.Models.Movie", b =>
@@ -121,6 +125,33 @@ namespace Axxes.EfCore.Workshop.Data.Migrations
                     b.HasOne("Axxes.EfCore.Workshop.Domain.Models.Genre", "Genre")
                         .WithMany("Movies")
                         .HasForeignKey("MainGenreId");
+
+                    b.OwnsOne("Axxes.EfCore.Workshop.Domain.Models.Director", "Director", b1 =>
+                        {
+                            b1.Property<int>("MovieItemKey")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("MovieItemKey");
+
+                            b1.ToTable("MotionPictures");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MovieItemKey");
+                        });
+
+                    b.Navigation("Director")
+                        .IsRequired();
 
                     b.Navigation("Genre");
                 });

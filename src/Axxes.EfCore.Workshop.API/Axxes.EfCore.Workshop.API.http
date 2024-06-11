@@ -4,11 +4,14 @@ POST {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/
 Content-Type: application/json
 
 {
-  "id": "8",
   "title": "Fight Club",
   "releaseDate": "1999-02-11",
   "description": "Ed Norton and Brad Pitt fight for a bit.",
-  "boxOfficeRevenue" : 1000000.0
+  "boxOfficeRevenue" : 1000000.0,
+  "director": {
+    "firstName": "David",
+    "lastName": "Fincher"
+  }
 }
 ###
 
