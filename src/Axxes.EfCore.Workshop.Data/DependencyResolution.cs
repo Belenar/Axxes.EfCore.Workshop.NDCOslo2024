@@ -1,7 +1,9 @@
 ﻿using Axxes.EfCore.Workshop.Data.Database;
 using Axxes.EfCore.Workshop.Data.Repositories;
 using Axxes.EfCore.Workshop.Domain.Infrastructure.Database;
+using Axxes.EfCore.Workshop.Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Axxes.EfCore.Workshop.Data;

@@ -1,13 +1,18 @@
 ﻿using Axxes.EfCore.Workshop.Data.Database.ValueConverters;
+using Axxes.EfCore.Workshop.Data.Tenants;
 using Axxes.EfCore.Workshop.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Axxes.EfCore.Workshop.Data.Database.Mapping;
 
-public class MovieConfiguration : IEntityTypeConfiguration<Movie>
+public class MovieConfiguration : TenantAwareMapping<Movie>
 {
-    public void Configure(EntityTypeBuilder<Movie> builder)
+    public MovieConfiguration(MoviesContext context) : base(context)
+    {
+    }
+
+    public override void ConfigureEntity(EntityTypeBuilder<Movie> builder)
     {
         builder
             .ToTable("MotionPictures")
@@ -24,13 +29,10 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.Property<DateTime>("CreatedAtUtc");
 
-        builder.HasQueryFilter(movie =>
-            EF.Property<DateTime>(movie, "CreatedAtUtc") > new DateTime(2000, 1, 1));
-
-        builder.OwnsMany(movie => movie.Directors);
-
         builder.Property(movie => movie.RowVersion)
             .IsRowVersion();
+
+        builder.OwnsMany(movie => movie.Directors);
     }
 }
 

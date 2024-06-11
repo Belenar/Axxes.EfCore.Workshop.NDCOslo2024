@@ -23,6 +23,7 @@
     <Folder Include="Database\Mapping\" />
     <Folder Include="Database\ValueConverters\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Tenants\" />
   </ItemGroup>
 
 </Project>

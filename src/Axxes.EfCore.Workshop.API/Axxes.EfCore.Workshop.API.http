@@ -2,6 +2,7 @@
 
 POST {{Axxes.EfCore.Workshop.API_HostAddress}}/Movie/
 Content-Type: application/json
+X-Tenant: Yael
 
 {
   "title": "Fight Club",
