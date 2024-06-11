@@ -10,7 +10,7 @@ public class Movie
     public DateOnly ReleaseDate { get; set; }
     public string? Description { get; set; }
 
-    public Director Director { get; set; }
+    public ICollection<Director> Directors { get; set; }
 
     public int? MainGenreId { get; set; }
     public Genre? Genre { get; set; }
@@ -38,7 +38,6 @@ public class Director
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
 }
-
 
 public class Genre
 {

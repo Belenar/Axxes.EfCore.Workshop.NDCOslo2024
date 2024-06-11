@@ -27,7 +27,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.HasQueryFilter(movie =>
             EF.Property<DateTime>(movie, "CreatedAtUtc") > new DateTime(2000, 1, 1));
 
-        builder.OwnsOne(movie => movie.Director);
+        builder.OwnsMany(movie => movie.Directors);
     }
 }
 
