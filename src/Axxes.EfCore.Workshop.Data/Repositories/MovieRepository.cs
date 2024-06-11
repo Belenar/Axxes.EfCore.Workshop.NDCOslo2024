@@ -10,6 +10,8 @@ public class MovieRepository(MoviesContext db) : IMovieRepository
     public async Task<IEnumerable<Movie>> GetAll()
     {
         return await db.Movies
+            .Include(movie => movie.Genre)
+            .Include(movie => movie.SecondaryGenres)
             .ToListAsync();
     }
 
