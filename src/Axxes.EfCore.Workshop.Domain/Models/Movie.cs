@@ -21,6 +21,17 @@ public class Movie
     }
 }
 
+public class CinemaMovie : Movie
+{
+    public decimal BoxOfficeRevenue { get; set; }
+}
+
+public class TelevisionMovie : Movie
+{
+    public required string NetworkFirstAiredOn { get; set; }
+}
+
+
 public class Genre
 {
     public int Id { get; set; }

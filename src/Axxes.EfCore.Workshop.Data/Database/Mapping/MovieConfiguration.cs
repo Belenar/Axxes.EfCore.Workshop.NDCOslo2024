@@ -29,6 +29,20 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
     }
 }
 
+public class CinemaMovieConfiguration : IEntityTypeConfiguration<CinemaMovie>
+{
+    public void Configure(EntityTypeBuilder<CinemaMovie> builder)
+    {
+    }
+}
+
+public class TelevisionMovieConfiguration : IEntityTypeConfiguration<TelevisionMovie>
+{
+    public void Configure(EntityTypeBuilder<TelevisionMovie> builder)
+    {
+    }
+}
+
 public class GenreConfiguration : IEntityTypeConfiguration<Genre>
 {
     public void Configure(EntityTypeBuilder<Genre> builder)
